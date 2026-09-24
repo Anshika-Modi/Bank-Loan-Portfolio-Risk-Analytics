@@ -1,90 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bank Loan Portfolio & Risk Analytics</title>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.3/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
-:root{
-  --bg:#f4f6f8; --panel:#ffffff; --ink:#17212b; --muted:#66727e;
-  --line:#dfe5ea; --nav:#18242f; --accent:#2f6f73; --accent2:#6d5c8f;
-  --good:#3f7f68; --warn:#a66b35; --bad:#a34d4d; --blue:#4e7ea8;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-.app{display:flex;min-height:100vh}
-.sidebar{width:235px;background:var(--nav);color:#fff;padding:22px 16px;position:sticky;top:0;height:100vh}
-.brand{font-weight:800;letter-spacing:.2px;font-size:17px;padding:4px 10px 24px}
-.brand span{display:block;color:#9fb6bd;font-size:11px;font-weight:500;margin-top:5px}
-.navbtn{width:100%;border:0;background:transparent;color:#c8d2d8;text-align:left;padding:12px 12px;border-radius:8px;margin:3px 0;cursor:pointer;font-size:13px}
-.navbtn.active,.navbtn:hover{background:#273743;color:#fff}
-.side-note{position:absolute;bottom:20px;left:20px;right:20px;color:#8ea0aa;font-size:10px;line-height:1.5}
-main{flex:1;min-width:0}
-.topbar{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
-.topbar small{color:var(--muted)}
-.content{padding:28px 30px 42px;max-width:1500px;margin:auto}
-h1{font-size:26px;margin:0 0 6px;letter-spacing:-.4px}
-.subtitle{color:var(--muted);font-size:13px;margin-bottom:22px}
-.filters{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px;display:grid;grid-template-columns:repeat(4,minmax(150px,1fr)) auto;gap:12px;margin-bottom:18px}
-label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-select{width:100%;height:38px;border:1px solid #d5dde3;border-radius:7px;background:#fff;padding:0 10px;color:var(--ink)}
-.reset{height:38px;border:1px solid #cbd5dc;background:#f8fafb;border-radius:7px;padding:0 15px;cursor:pointer;color:#33434f;font-weight:700}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:17px}
-.kpi .label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
-.kpi .value{font-size:25px;font-weight:800;margin-top:7px;letter-spacing:-.5px}
-.kpi .sub{font-size:11px;color:var(--muted);margin-top:4px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
-.card.full{grid-column:1/-1}
-.card h2{font-size:14px;margin:0 0 4px}
-.card p{font-size:11px;color:var(--muted);margin:0 0 14px}
-.chart-wrap{height:300px;position:relative}
-.chart-wrap.tall{height:340px}
-.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.insight{border:1px solid var(--line);border-radius:9px;padding:15px;background:#fbfcfd}
-.insight b{display:block;font-size:12px;margin-bottom:6px}
-.insight span{font-size:12px;color:var(--muted);line-height:1.45}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:100%;font-size:11px;background:#fff}
-th,td{padding:9px 10px;border-bottom:1px solid #edf0f2;text-align:left;white-space:nowrap}
-th{background:#f6f8fa;color:#55636e;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
-.badge{display:inline-block;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:700}
-.badge.good{background:#e8f3ee;color:#2f6d57}.badge.bad{background:#f7e8e8;color:#914545}.badge.current{background:#edf3f6;color:#476676}
-.hidden{display:none}
-.footer{color:#89949d;text-align:center;font-size:10px;padding:18px}
-@media(max-width:1050px){.sidebar{width:190px}.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.app{display:block}.sidebar{position:relative;width:100%;height:auto}.side-note{display:none}.navbtn{width:auto;margin-right:4px}.topbar{position:relative;padding:0 16px}.content{padding:20px 14px}.grid{grid-template-columns:1fr}.insights{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
+:root{--bg:#f5f7fa;--panel:#fff;--ink:#17212b;--muted:#6b7785;--line:#e6eaf0;--nav:#101820;--accent:#47759a;--accent2:#6e5c8c;--green:#397761;--orange:#a56c3c;--red:#a64e50;--shadow:0 8px 24px rgba(22,34,48,.06)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{min-height:100vh;display:flex}.sidebar{width:245px;background:var(--nav);color:#fff;position:fixed;inset:0 auto 0 0;padding:28px 18px;display:flex;flex-direction:column}.brand{font-weight:800;letter-spacing:.04em;font-size:18px;line-height:1.25;margin:0 10px 35px}.brand span{display:block;font-size:10px;letter-spacing:.15em;color:#9ca8b4;margin-top:7px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#aeb8c2;text-align:left;padding:13px 12px;border-radius:8px;font-size:14px;cursor:pointer}.nav button:hover,.nav button.active{background:#202c37;color:#fff}.sidebottom{margin-top:auto;padding:12px 10px;color:#8996a3;font-size:11px;line-height:1.6}
+main{margin-left:245px;width:calc(100% - 245px)}.topbar{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;z-index:5}.topbar strong{font-size:14px}.topbar a{font-size:12px;color:var(--accent);text-decoration:none}.content{padding:30px 34px 50px;max-width:1450px;margin:auto}h1{font-size:29px;margin:0 0 7px}.subtitle{color:var(--muted);font-size:14px;margin-bottom:24px}.filters{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(4,1fr) 120px;gap:12px;margin-bottom:18px;box-shadow:var(--shadow)}label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px}select,input{width:100%;height:38px;border:1px solid #dce2e8;border-radius:7px;background:#fff;padding:0 10px;color:var(--ink);font-size:13px;outline:none}select:focus,input:focus{border-color:#9db4c7}.reset{height:38px;border:0;border-radius:7px;background:#eef2f5;color:#26313a;font-weight:600;cursor:pointer}.reset:hover{background:#e3e9ee}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}.kpi .label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.kpi .value{font-size:25px;font-weight:750;margin-top:8px}.kpi .sub{font-size:11px;color:#8b96a1;margin-top:5px}
+.view{display:none}.view.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:var(--shadow);min-width:0}.card.full{margin-bottom:16px}.card h2{font-size:15px;margin:0 0 5px}.card p{font-size:12px;color:var(--muted);margin:0 0 14px}.chart{height:290px;position:relative}.chart svg{width:100%;height:100%;overflow:visible}.empty{display:flex;height:100%;align-items:center;justify-content:center;color:#9aa5af;font-size:13px}.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.insight{border:1px solid var(--line);border-radius:9px;padding:14px;background:#fafbfc}.insight b{display:block;font-size:12px;margin-bottom:6px}.insight span{font-size:12px;color:var(--muted);line-height:1.5}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:12px;min-width:850px}th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#fafbfc;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}tr:last-child td{border-bottom:0}.badge{padding:4px 7px;border-radius:99px;font-size:10px}.good{background:#e7f2ed;color:#34745c}.bad{background:#f7e8e8;color:#984d50}.current{background:#e9eff5;color:#476e8d}.searchrow{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}.searchrow input{max-width:300px}.footer{color:#8b96a1;font-size:11px;text-align:center;margin-top:25px}.loading{background:#fff;border:1px solid var(--line);padding:13px;border-radius:10px;color:var(--muted);font-size:12px;margin-bottom:16px}.error{background:#fff1f1;border:1px solid #efcaca;color:#914747;padding:13px;border-radius:10px;font-size:12px;margin-bottom:16px}
+@media(max-width:1000px){.sidebar{width:200px}main{margin-left:200px;width:calc(100% - 200px)}.filters{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.sidebar{position:static;width:100%;height:auto}.app{display:block}main{margin:0;width:100%}.nav{grid-template-columns:repeat(2,1fr)}.sidebottom{display:none}.content{padding:20px}.topbar{padding:0 20px}.grid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr}.insights{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="sidebar">
   <div class="brand">ANSHIKA MODI<span>DATA ANALYTICS PORTFOLIO</span></div>
-  <button class="navbtn active" data-view="overview">Portfolio Overview</button>
-  <button class="navbtn" data-view="risk">Risk Indicators</button>
-  <button class="navbtn" data-view="borrower">Borrower & Loan Mix</button>
-  <div class="side-note">Bank Loan Portfolio & Risk Analytics<br>Python • SQL • Tableau</div>
+  <div class="nav">
+    <button class="active" data-view="overview">Portfolio Overview</button>
+    <button data-view="risk">Risk Indicators</button>
+    <button data-view="borrower">Borrower & Loan Mix</button>
+    <button data-view="records">Data Explorer</button>
+  </div>
+  <div class="sidebottom">Bank Loan Portfolio & Risk Analytics<br>Python • SQL • Tableau</div>
 </aside>
 <main>
-  <div class="topbar">
-    <div><strong id="viewTitle">Portfolio Overview</strong></div>
-    <small>Interactive analytics demo</small>
-  </div>
+  <div class="topbar"><strong id="viewTitle">Portfolio Overview</strong><a href="https://public.tableau.com/app/profile/anshika.modi2902/viz/Bank_Loan_Portfolio_Risk_Analytics/BankLoanPortfolioRiskAnalytics" target="_blank">Open Tableau Dashboard ↗</a></div>
   <section class="content">
     <h1>Bank Loan Portfolio & Risk Analytics</h1>
-    <div class="subtitle">Interactive analysis of loan applications, funding, borrower characteristics and portfolio risk indicators.</div>
-
+    <div class="subtitle">Interactive analysis of 38K+ loan applications, funding, borrower characteristics and portfolio risk indicators.</div>
+    <div id="statusMsg" class="loading">Loading loan portfolio data…</div>
     <div class="filters">
       <div><label>Loan Grade</label><select id="grade"><option value="ALL">All grades</option></select></div>
       <div><label>Loan Status</label><select id="status"><option value="ALL">All statuses</option></select></div>
       <div><label>Purpose</label><select id="purpose"><option value="ALL">All purposes</option></select></div>
       <div><label>State</label><select id="state"><option value="ALL">All states</option></select></div>
-      <div style="display:flex;align-items:end"><button class="reset" id="reset">Reset filters</button></div>
+      <div><label>&nbsp;</label><button class="reset" id="reset">Reset filters</button></div>
     </div>
-
     <div class="kpis">
       <div class="kpi"><div class="label">Loan Applications</div><div class="value" id="kpiApps">—</div><div class="sub">Records in selected segment</div></div>
       <div class="kpi"><div class="label">Funded Amount</div><div class="value" id="kpiFunded">—</div><div class="sub">Total loan amount</div></div>
@@ -92,121 +47,62 @@ th{background:#f6f8fa;color:#55636e;font-size:10px;text-transform:uppercase;lett
       <div class="kpi"><div class="label">Average DTI</div><div class="value" id="kpiDti">—</div><div class="sub">Debt-to-income ratio</div></div>
     </div>
 
-    <div id="overview" class="view">
+    <div id="overview" class="view active">
       <div class="grid">
-        <div class="card"><h2>Loan Status Distribution</h2><p>How selected applications are distributed by current loan status.</p><div class="chart-wrap"><canvas id="statusChart"></canvas></div></div>
-        <div class="card"><h2>Loan Purpose</h2><p>Application volume across major loan purposes.</p><div class="chart-wrap"><canvas id="purposeChart"></canvas></div></div>
+        <div class="card"><h2>Loan Status Distribution</h2><p>Selected applications by current loan status.</p><div class="chart" id="statusChart"></div></div>
+        <div class="card"><h2>Loan Purpose</h2><p>Application volume across major loan purposes.</p><div class="chart" id="purposeChart"></div></div>
       </div>
       <div class="grid">
-        <div class="card"><h2>Average Interest Rate by Grade</h2><p>Average interest rate across loan grades.</p><div class="chart-wrap"><canvas id="gradeChart"></canvas></div></div>
-        <div class="card"><h2>Monthly Applications</h2><p>Application volume based on issue date.</p><div class="chart-wrap"><canvas id="monthlyChart"></canvas></div></div>
+        <div class="card"><h2>Average Interest Rate by Grade</h2><p>Average interest rate across loan grades.</p><div class="chart" id="gradeChart"></div></div>
+        <div class="card"><h2>Monthly Applications</h2><p>Application volume based on issue date.</p><div class="chart" id="monthlyChart"></div></div>
       </div>
     </div>
 
-    <div id="risk" class="view hidden">
+    <div id="risk" class="view">
       <div class="grid">
-        <div class="card"><h2>Average DTI by Loan Status</h2><p>Association between loan status and borrower debt-to-income ratio.</p><div class="chart-wrap"><canvas id="dtiChart"></canvas></div></div>
-        <div class="card"><h2>Loan Status by Grade</h2><p>Application counts by grade and status.</p><div class="chart-wrap"><canvas id="gradeStatusChart"></canvas></div></div>
+        <div class="card"><h2>Average DTI by Loan Status</h2><p>Descriptive association between loan status and borrower DTI.</p><div class="chart" id="dtiChart"></div></div>
+        <div class="card"><h2>Loan Status by Grade</h2><p>Application counts by grade and loan status.</p><div class="chart" id="gradeStatusChart"></div></div>
       </div>
-      <div class="card full">
-        <h2>Risk-oriented observations</h2>
-        <p>These are descriptive patterns in the dataset, not predictions of individual borrower default.</p>
-        <div class="insights" id="riskInsights"></div>
+      <div class="card full"><h2>Risk-oriented observations</h2><p>These are descriptive patterns in the dataset, not predictions of individual borrower default.</p><div class="insights" id="riskInsights"></div></div>
+    </div>
+
+    <div id="borrower" class="view">
+      <div class="grid">
+        <div class="card"><h2>Home Ownership</h2><p>Selected applications by home ownership category.</p><div class="chart" id="homeChart"></div></div>
+        <div class="card"><h2>Employment Length</h2><p>Selected applications by employment-length category.</p><div class="chart" id="empChart"></div></div>
       </div>
     </div>
 
-    <div id="borrower" class="view hidden">
-      <div class="grid">
-        <div class="card"><h2>Home Ownership</h2><p>Selected applications by home ownership category.</p><div class="chart-wrap"><canvas id="homeChart"></canvas></div></div>
-        <div class="card"><h2>Employment Length</h2><p>Selected applications by employment-length category.</p><div class="chart-wrap"><canvas id="empChart"></canvas></div></div>
-      </div>
-      <div class="card full">
-        <h2>Selected Loan Records</h2>
-        <p>A sample of records matching the current filters.</p>
-        <div class="table-wrap"><table><thead><tr><th>ID</th><th>Status</th><th>Grade</th><th>Purpose</th><th>State</th><th>Loan Amount</th><th>Interest</th><th>DTI</th></tr></thead><tbody id="records"></tbody></table></div>
-      </div>
+    <div id="records" class="view">
+      <div class="card full"><h2>Data Explorer</h2><p>Search and inspect records matching the current filters.</p><div class="searchrow"><input id="search" placeholder="Search ID, purpose, state, grade…"><span id="recordCount" style="font-size:11px;color:var(--muted);padding-top:12px"></span></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Status</th><th>Grade</th><th>Purpose</th><th>State</th><th>Loan Amount</th><th>Interest</th><th>DTI</th></tr></thead><tbody id="recordsBody"></tbody></table></div></div>
     </div>
-
-    <div class="footer">Built as a portfolio analytics demonstration • Source dataset: public financial loan dataset • GitHub repository available from the project resume link</div>
+    <div class="footer">Public financial loan dataset • Portfolio analytics demonstration • <a href="https://github.com/Anshika-Modi/Bank-Loan-Portfolio-Risk-Analytics" target="_blank">GitHub repository</a></div>
   </section>
 </main>
 </div>
-
 <script>
-const CSV_URL = "data/financial_loan.csv";
-let allData=[], filtered=[];
-const charts={};
-const colors=["#4e7ea8","#6d5c8f","#3f7f68","#a66b35","#8a6a9b","#547b8a","#a34d4d"];
-
-function money(v){ if(!isFinite(v)) return "—"; return "₹"+(v/1e6).toFixed(1)+"M"; }
-function num(v){ return Number(String(v??"").replace(/[$,%]/g,""))||0; }
-function avg(a,key){const vals=a.map(x=>num(x[key])).filter(v=>isFinite(v));return vals.length?vals.reduce((s,v)=>s+v,0)/vals.length:0}
-function countBy(a,key){const m={};a.forEach(x=>{let k=x[key]||"Unknown";m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
-function destroy(name){if(charts[name]){charts[name].destroy();delete charts[name]}}
-function baseChart(id,type,labels,data,label,colorIndex=0,stacked=false){
-  destroy(id); const ctx=document.getElementById(id);
-  charts[id]=new Chart(ctx,{type,data:{labels,datasets:[{label,data,backgroundColor:type==="line"?"rgba(78,126,168,.12)":colors[colorIndex],borderColor:colors[colorIndex],borderWidth:2,fill:type==="line",tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:"#edf0f2"}}}}});
-}
-function multiBar(id,labels,datasets){
- destroy(id); charts[id]=new Chart(document.getElementById(id),{type:"bar",data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom",labels:{boxWidth:10,font:{size:10}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:"#edf0f2"}}}}});
-}
-function pie(id,labels,data){
- destroy(id); charts[id]=new Chart(document.getElementById(id),{type:"doughnut",data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:"#fff"}]},options:{responsive:true,maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"right",labels:{font:{size:10},boxWidth:10}}}}});
-}
-function populateSelect(id,key){
- const el=document.getElementById(id), vals=[...new Set(allData.map(x=>x[key]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
- vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;el.appendChild(o)});
-}
-function apply(){
- const g=document.getElementById("grade").value,s=document.getElementById("status").value,p=document.getElementById("purpose").value,st=document.getElementById("state").value;
- filtered=allData.filter(x=>(g==="ALL"||x.grade===g)&&(s==="ALL"||x.loan_status===s)&&(p==="ALL"||x.purpose===p)&&(st==="ALL"||x.address_state===st));
- update();
-}
-function update(){
- document.getElementById("kpiApps").textContent=filtered.length.toLocaleString("en-IN");
- document.getElementById("kpiFunded").textContent=money(filtered.reduce((s,x)=>s+num(x.loan_amount),0));
- document.getElementById("kpiRate").textContent=avg(filtered,"int_rate").toFixed(1)+"%";
- document.getElementById("kpiDti").textContent=avg(filtered,"dti").toFixed(1)+"%";
-
- let x=countBy(filtered,"loan_status").slice(0,8); pie("statusChart",x.map(z=>z[0]),x.map(z=>z[1]));
- x=countBy(filtered,"purpose").slice(0,8).reverse(); baseChart("purposeChart","bar",x.map(z=>z[0]),x.map(z=>z[1]),"Applications",1);
- x=countBy(filtered,"grade").sort((a,b)=>String(a[0]).localeCompare(String(b[0]))); 
- const gradeRates=x.map(z=>avg(filtered.filter(r=>r.grade===z[0]),"int_rate")); baseChart("gradeChart","bar",x.map(z=>z[0]),gradeRates,"Avg Interest",2);
- const months={}; filtered.forEach(r=>{let d=r.issue_date?new Date(r.issue_date):null;if(d&&!isNaN(d)){let k=d.toLocaleString("en-US",{month:"short",year:"numeric"});months[k]=(months[k]||0)+1}});
- let ms=Object.entries(months).sort((a,b)=>new Date("1 "+a[0])-new Date("1 "+b[0])); baseChart("monthlyChart","line",ms.map(z=>z[0]),ms.map(z=>z[1]),"Applications",0);
-
- x=countBy(filtered,"loan_status"); const dti=x.map(z=>avg(filtered.filter(r=>r.loan_status===z[0]),"dti")); baseChart("dtiChart","bar",x.map(z=>z[0]),dti,"Avg DTI",3);
- const grades=[...new Set(filtered.map(r=>r.grade).filter(Boolean))].sort(); const statuses=[...new Set(filtered.map(r=>r.loan_status).filter(Boolean))];
- multiBar("gradeStatusChart",grades,statuses.map((s,i)=>({label:s,data:grades.map(g=>filtered.filter(r=>r.grade===g&&r.loan_status===s).length),backgroundColor:colors[i%colors.length],borderWidth:0})));
-
- x=countBy(filtered,"home_ownership").slice(0,7); baseChart("homeChart","bar",x.map(z=>z[0]),x.map(z=>z[1]),"Applications",4);
- x=countBy(filtered,"emp_length").slice(0,10).reverse(); baseChart("empChart","bar",x.map(z=>z[0]),x.map(z=>z[1]),"Applications",5);
-
- const rows=filtered.slice(0,20); document.getElementById("records").innerHTML=rows.map(r=>`<tr><td>${r.id||""}</td><td><span class="badge ${r.loan_status==="Charged Off"?"bad":r.loan_status==="Current"?"current":"good"}">${r.loan_status||""}</span></td><td>${r.grade||""}</td><td>${r.purpose||""}</td><td>${r.address_state||""}</td><td>$${num(r.loan_amount).toLocaleString()}</td><td>${num(r.int_rate).toFixed(1)}%</td><td>${num(r.dti).toFixed(1)}%</td></tr>`).join("");
-
- const highestGrade=grades[grades.length-1]; const topPurpose=countBy(filtered,"purpose")[0]?.[0]||"—"; const maxDti=x.length?x.reduce((a,b)=>b[1]>a[1]?b:a)[0]:"—";
- document.getElementById("riskInsights").innerHTML=[
-   ["Portfolio mix",`${topPurpose} is the most common loan purpose in the current selection.`],
-   ["Interest by grade",`Average interest rates can be compared across grades using the chart above.`],
-   ["DTI pattern",`The dashboard shows average DTI by loan status as a descriptive portfolio pattern.`]
- ].map(z=>`<div class="insight"><b>${z[0]}</b><span>${z[1]}</span></div>`).join("");
-}
-document.querySelectorAll(".navbtn").forEach(b=>b.addEventListener("click",()=>{
- document.querySelectorAll(".navbtn").forEach(x=>x.classList.remove("active")); b.classList.add("active");
- document.querySelectorAll(".view").forEach(v=>v.classList.add("hidden"));
- document.getElementById(b.dataset.view).classList.remove("hidden");
- document.getElementById("viewTitle").textContent=b.textContent;
- update();
-}));
-["grade","status","purpose","state"].forEach(id=>document.getElementById(id).addEventListener("change",apply));
-document.getElementById("reset").onclick=()=>{["grade","status","purpose","state"].forEach(id=>document.getElementById(id).value="ALL");apply()};
-
-Papa.parse(CSV_URL,{download:true,header:true,skipEmptyLines:true,dynamicTyping:false,
- complete:(res)=>{
-   allData=res.data.filter(r=>r.id);
-   populateSelect("grade","grade");populateSelect("status","loan_status");populateSelect("purpose","purpose");populateSelect("state","address_state");
-   filtered=allData;update();
- },error:(err)=>{document.querySelector(".content").insertAdjacentHTML("afterbegin",`<div class="card" style="margin-bottom:18px;color:#914545">Could not load the dataset. Please check that the GitHub repository is public and the CSV path is correct.</div>`)}});
+const DATA_URL='data/financial_loan.csv';
+let allData=[],filtered=[];let searchText='';
+const palette=['#47759a','#6e5c8c','#397761','#a56c3c','#7c6a9d','#5a8290','#a64e50','#788b58'];
+const $=id=>document.getElementById(id); const n=v=>Number(String(v??'').replace(/[$,%]/g,''))||0;
+function fmtMoney(v){return '$'+Math.round(v).toLocaleString()}; function avg(a,k){let x=a.map(r=>n(r[k])).filter(Number.isFinite);return x.length?x.reduce((s,v)=>s+v,0)/x.length:0}
+function groups(a,k){let m={};a.forEach(r=>{let x=r[k]||'Unknown';m[x]=(m[x]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])}
+function parseCSV(t){let rows=[],row=[],cell='',q=false;for(let i=0;i<t.length;i++){let c=t[i],nx=t[i+1];if(c==='"'){if(q&&nx==='"'){cell+='"';i++}else q=!q}else if(c===','&&!q){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&nx==='\n')i++;row.push(cell);cell='';if(row.some(v=>v!==''))rows.push(row);row=[]}else cell+=c}if(cell!==''||row.length){row.push(cell);rows.push(row)}let h=rows.shift();return rows.map(r=>Object.fromEntries(h.map((x,i)=>[x,(r[i]??'').trim()])))}
+function esc(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function svgBar(id,items,{percent=false,horiz=false,color=palette[0]}={}){let el=$(id);if(!items.length){el.innerHTML='<div class="empty">No data for this selection</div>';return}let W=el.clientWidth||600,H=el.clientHeight||290,pad={l:horiz?105:40,r:15,t:15,b:45},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b,max=Math.max(...items.map(x=>x[1]))||1;let barW=horiz?Math.max(10,ih/items.length*.58):Math.max(8,iw/items.length*.68);let svg=`<svg viewBox="0 0 ${W} ${H}" role="img">`;svg+=`<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="#dfe5ea"/>`;items.forEach((x,i)=>{if(horiz){let y=pad.t+i*(ih/items.length)+(ih/items.length-barW)/2,w=(x[1]/max)*iw;svg+=`<text x="${pad.l-8}" y="${y+barW/2+4}" text-anchor="end" font-size="10" fill="#65717c">${esc(x[0])}</text><rect x="${pad.l}" y="${y}" width="${w}" height="${barW}" rx="4" fill="${palette[i%palette.length]}"><title>${esc(x[0])}: ${x[1].toLocaleString()}</title></rect>`}else{let x0=pad.l+i*(iw/items.length)+(iw/items.length-barW)/2,h=(x[1]/max)*ih,y=H-pad.b-h;svg+=`<rect x="${x0}" y="${y}" width="${barW}" height="${h}" rx="4" fill="${palette[i%palette.length]}"><title>${esc(x[0])}: ${x[1].toLocaleString()}</title></rect><text x="${x0+barW/2}" y="${H-pad.b+16}" text-anchor="middle" font-size="9" fill="#65717c">${esc(x[0].length>11?x[0].slice(0,10)+'…':x[0])}</text>`}});svg+='</svg>';el.innerHTML=svg}
+function svgLine(id,items){let el=$(id);if(items.length<2){svgBar(id,items);return}let W=el.clientWidth||600,H=el.clientHeight||290,p={l:42,r:15,t:15,b:42},iw=W-p.l-p.r,ih=H-p.t-p.b,max=Math.max(...items.map(x=>x[1]))||1,pts=items.map((x,i)=>[p.l+i*(iw/(items.length-1)),H-p.b-(x[1]/max)*ih]);let d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');let svg=`<svg viewBox="0 0 ${W} ${H}"><path d="${d}" fill="none" stroke="${palette[0]}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;pts.forEach((p,i)=>svg+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${palette[0]}"><title>${esc(items[i][0])}: ${items[i][1].toLocaleString()}</title></circle>`);let step=Math.max(1,Math.ceil(items.length/8));items.forEach((x,i)=>{if(i%step===0)svg+=`<text x="${pts[i][0]}" y="${H-p.b+17}" text-anchor="middle" font-size="9" fill="#65717c">${esc(x[0])}</text>`});svg+='</svg>';el.innerHTML=svg}
+function svgDonut(id,items){let el=$(id);if(!items.length){el.innerHTML='<div class="empty">No data for this selection</div>';return}let W=el.clientWidth||600,H=el.clientHeight||290,cx=W*.32,cy=H/2,R=Math.min(H*.34,105),inner=R*.58,total=items.reduce((s,x)=>s+x[1],0),a=-Math.PI/2;function polar(r,t){return[cx+r*Math.cos(t),cy+r*Math.sin(t)]}function arc(r1,r2,a0,a1){let p1=polar(r2,a0),p2=polar(r2,a1),p3=polar(r1,a1),p4=polar(r1,a0),large=a1-a0>Math.PI?1:0;return`M${p1[0]},${p1[1]}A${r2},${r2} 0 ${large} 1 ${p2[0]},${p2[1]}L${p3[0]},${p3[1]}A${r1},${r1} 0 ${large} 0 ${p4[0]},${p4[1]}Z`}let svg=`<svg viewBox="0 0 ${W} ${H}">`;items.forEach((x,i)=>{let a2=a+(x[1]/total)*Math.PI*2;svg+=`<path d="${arc(inner,R,a,a2)}" fill="${palette[i%palette.length]}"><title>${esc(x[0])}: ${x[1].toLocaleString()}</title></path>`;a=a2});svg+=`<text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="22" font-weight="700" fill="#17212b">${total.toLocaleString()}</text><text x="${cx}" y="${cy+15}" text-anchor="middle" font-size="10" fill="#77838e">Applications</text>`;let lx=W*.58,ly=30;items.slice(0,8).forEach((x,i)=>{svg+=`<circle cx="${lx}" cy="${ly+i*28}" r="5" fill="${palette[i%palette.length]}"/><text x="${lx+12}" y="${ly+4+i*28}" font-size="10" fill="#65717c">${esc(x[0])} · ${x[1].toLocaleString()}</text>`});svg+='</svg>';el.innerHTML=svg}
+function populate(id,key){let vals=[...new Set(allData.map(r=>r[key]).filter(Boolean))].sort();$(id).innerHTML='<option value="ALL">All '+id.replace(/^[a-z]/,x=>x.toUpperCase())+'s</option>'+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')}
+function apply(){let fs={grade:$('grade').value,status:$('status').value,purpose:$('purpose').value,state:$('state').value};filtered=allData.filter(r=>(fs.grade==='ALL'||r.grade===fs.grade)&&(fs.status==='ALL'||r.loan_status===fs.status)&&(fs.purpose==='ALL'||r.purpose===fs.purpose)&&(fs.state==='ALL'||r.address_state===fs.state));render()}
+function render(){let a=filtered;$('kpiApps').textContent=a.length.toLocaleString();$('kpiFunded').textContent=fmtMoney(a.reduce((s,r)=>s+n(r.loan_amount),0));$('kpiRate').textContent=avg(a,'int_rate').toFixed(1)+'%';$('kpiDti').textContent=avg(a,'dti').toFixed(1)+'%';
+svgDonut('statusChart',groups(a,'loan_status'));svgBar('purposeChart',groups(a,'purpose').slice(0,10),{horiz:true});let gr=[...new Set(a.map(r=>r.grade).filter(Boolean))].sort().map(g=>[g,avg(a.filter(r=>r.grade===g),'int_rate')]);svgBar('gradeChart',gr);let mm={};a.forEach(r=>{let d=new Date(r.issue_date);if(!isNaN(d)){let k=d.toLocaleString('en-US',{month:'short',year:'numeric'});mm[k]=(mm[k]||0)+1}});let months=Object.entries(mm).sort((x,y)=>new Date('1 '+x[0])-new Date('1 '+y[0]));svgLine('monthlyChart',months);
+let dti=groups(a,'loan_status').map(x=>[x[0],avg(a.filter(r=>r.loan_status===x[0]),'dti')]);svgBar('dtiChart',dti,{horiz:true});let grades=[...new Set(a.map(r=>r.grade).filter(Boolean))].sort();let statusVals=[...new Set(a.map(r=>r.loan_status).filter(Boolean))];let gs=grades.map(g=>[g,a.filter(r=>r.grade===g).length]);svgBar('gradeStatusChart',gs);
+svgBar('homeChart',groups(a,'home_ownership').slice(0,8),{horiz:true});svgBar('empChart',groups(a,'emp_length').slice(0,10),{horiz:true});
+let top=groups(a,'purpose')[0]?.[0]||'—';$('riskInsights').innerHTML=`<div class="insight"><b>Portfolio mix</b><span>${esc(top)} is the most common loan purpose in the current selection.</span></div><div class="insight"><b>Interest by grade</b><span>Average interest rates can be compared across grades in the dashboard.</span></div><div class="insight"><b>DTI pattern</b><span>Average DTI is shown by loan status as a descriptive portfolio pattern.</span></div>`;
+renderTable()}
+function renderTable(){let q=searchText.toLowerCase();let rows=filtered.filter(r=>!q||Object.values(r).some(v=>String(v).toLowerCase().includes(q))).slice(0,100);$('recordCount').textContent=`Showing ${rows.length.toLocaleString()} of ${filtered.length.toLocaleString()} matching records`;$('recordsBody').innerHTML=rows.map(r=>`<tr><td>${esc(r.id)}</td><td><span class="badge ${r.loan_status==='Charged Off'?'bad':r.loan_status==='Current'?'current':'good'}">${esc(r.loan_status)}</span></td><td>${esc(r.grade)}</td><td>${esc(r.purpose)}</td><td>${esc(r.address_state)}</td><td>$${n(r.loan_amount).toLocaleString()}</td><td>${n(r.int_rate).toFixed(1)}%</td><td>${n(r.dti).toFixed(1)}%</td></tr>`).join('')}
+function load(){fetch(DATA_URL).then(r=>{if(!r.ok)throw Error('Dataset could not be loaded');return r.text()}).then(t=>{allData=parseCSV(t).filter(r=>r.id);$('statusMsg').remove();populate('grade','grade');populate('status','loan_status');populate('purpose','purpose');populate('state','address_state');filtered=allData;render()}).catch(e=>{$('statusMsg').className='error';$('statusMsg').textContent='The dashboard could not load the CSV. Make sure financial_loan.csv is present inside the repository data/ folder.'})}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$(b.dataset.view).classList.add('active');$('viewTitle').textContent=b.textContent});['grade','status','purpose','state'].forEach(id=>$(id).onchange=apply);$('reset').onclick=()=>{['grade','status','purpose','state'].forEach(id=>$(id).value='ALL');apply()};$('search').oninput=e=>{searchText=e.target.value;renderTable()};window.addEventListener('resize',()=>{if(allData.length)render()});load();
 </script>
 </body>
 </html>
